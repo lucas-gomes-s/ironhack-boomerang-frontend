@@ -1,7 +1,7 @@
 import Navbar from "../components/Navbar"
 import api from "../configs/api"
 import {useState, useEffect} from "react"
-import CategoryCard from "../components/CategoryCard"
+import ItensList from "../components/ItensList"
 import CenteredLoading from "../components/CenteredLoading"
 
 function Homepage() {
@@ -28,7 +28,7 @@ function Homepage() {
             {loading? 
             <CenteredLoading/>
             :
-            <CategoryCard category = {categories}/>
+            <ItensList link="category" itens = {categories}/>
             }
         </>
     )

@@ -2,20 +2,26 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './assets/index.css';
 import App from './components/App';
+import "./configs/firebase"
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom"
 import theme from "./configs/materialUiTheme"
 import { ThemeProvider} from '@mui/material/styles';
-
+import { AuthContextProvider } from './contexts/authContext';
+import {CartContextProvider} from "./contexts/cartContext"
 
 ReactDOM.render(
-  <ThemeProvider theme={theme}>
-    <BrowserRouter>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    </BrowserRouter>
-  </ThemeProvider>,
+  <AuthContextProvider>
+    <CartContextProvider>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <React.StrictMode>
+            <App />
+          </React.StrictMode>
+        </BrowserRouter>
+      </ThemeProvider>
+    </CartContextProvider>
+  </AuthContextProvider>,
   document.getElementById('root')
 );
 

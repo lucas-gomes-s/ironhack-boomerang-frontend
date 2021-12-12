@@ -3,22 +3,22 @@ import {Link} from "react-router-dom"
 import { useTheme, useMediaQuery} from "@material-ui/core";
 import {Box} from "@mui/system"
 
-function CategoryCard(props) {
+function ItensList(props) {
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('sm'));
     return (
-    <Box sx={{m: 2}}>
-    <ImageList cols={isSmallScreen? 2 : 4}>
-        {props.category.map(category => {
+    <Box sx={{m: 2, display:"flex", justifyContent: "center"}}>
+    <ImageList cols={isSmallScreen? 2 : 4} sx={{width:"80vw"}}>
+        {props.itens.map(item => {
             return (
-                <Link to={`/category/${category._id}`} className="clean-link" >
+                <Link to={`/${props.link}/${item._id}`} className="clean-link" >
                     <ImageListItem>
                         <img
-                            src = {category.imgLogo}
-                            alt = {category.name}
+                            src = {item.img}
+                            alt = {item.name}
                             loading = "lazy"
                         />
                         <ImageListItemBar
-                            title = {category.name}
+                            title = {item.name}
                         />
                     </ImageListItem>
                 </Link>
@@ -29,4 +29,4 @@ function CategoryCard(props) {
     )
 }
 
-export default (CategoryCard)
+export default (ItensList)

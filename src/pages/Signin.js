@@ -1,4 +1,4 @@
-import uiConfig from "../configs/firebase";
+import {uiConfig} from "../configs/firebase";
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import firebase from 'firebase/compat/app';
 import Navbar from "../components/Navbar"
