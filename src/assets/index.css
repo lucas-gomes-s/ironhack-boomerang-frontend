@@ -16,3 +16,22 @@ code {
   text-decoration: none;
   color: #22252C;
 }
+
+.hover-highlight:hover{
+  border-style: solid;
+  border-color: white;
+  
+}
+
+.flex-row {
+  display: flex
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.invalid {
+  border: red solid 2px
+}

@@ -9,18 +9,22 @@ import theme from "./configs/materialUiTheme"
 import { ThemeProvider} from '@mui/material/styles';
 import { AuthContextProvider } from './contexts/authContext';
 import {CartContextProvider} from "./contexts/cartContext"
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import AdapterMoment from '@mui/lab/AdapterMoment';
 
 ReactDOM.render(
   <AuthContextProvider>
-    <CartContextProvider>
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
-          <React.StrictMode>
-            <App />
-          </React.StrictMode>
-        </BrowserRouter>
-      </ThemeProvider>
-    </CartContextProvider>
+    <LocalizationProvider dateAdapter={AdapterMoment} locale="ptBR" >
+      <CartContextProvider>
+        <ThemeProvider theme={theme}>
+          <BrowserRouter>
+            <React.StrictMode>
+              <App />
+            </React.StrictMode>
+          </BrowserRouter>
+        </ThemeProvider>
+      </CartContextProvider>
+    </LocalizationProvider>
   </AuthContextProvider>,
   document.getElementById('root')
 );

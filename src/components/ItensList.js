@@ -10,7 +10,7 @@ function ItensList(props) {
     <ImageList cols={isSmallScreen? 2 : 4} sx={{width:"80vw"}}>
         {props.itens.map(item => {
             return (
-                <Link to={`/${props.link}/${item._id}`} className="clean-link" >
+                <Link to={`/${props.link}/${item._id}`} className="clean-link" key={item._id}>
                     <ImageListItem>
                         <img
                             src = {item.img}

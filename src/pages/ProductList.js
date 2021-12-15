@@ -1,7 +1,7 @@
 import api from "../configs/api"
 import {useState, useEffect} from "react"
 import {useParams} from "react-router-dom"
-import Navbar from "../components/Navbar"
+import Navbar from "../components/Navigation/Navbar"
 import ItensList from "../components/ItensList"
 import CenteredLoading from "../components/CenteredLoading"
 

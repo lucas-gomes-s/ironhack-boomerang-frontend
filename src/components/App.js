@@ -4,11 +4,11 @@ import Signin from "../pages/Signin"
 import Homepage from "../pages/Homepage"
 import Productlist from "../pages/ProductList"
 import Productpage from "../pages/Productpage"
-
-
+import dotenv from "dotenv"
 
 
 function App() {
+  //dotenv.config()
   return (
     <div className="App">
       <Routes>
