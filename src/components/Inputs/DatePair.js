@@ -1,50 +1,69 @@
 import DatePicker from '@mui/lab/DatePicker';
-import {TextField} from "@mui/material";
+import {TextField, Grid} from "@mui/material";
 import {Box} from "@mui/system"
 import moment from "moment"
 
 
 function DatePair(props) {
     const blockEndDate = (date) => {
-        return (date<props.startDate)
+        return (
+            !props.showCalendar
+            ||
+            date<props.startDate
+            ||
+            props.offdays.includes(moment(date).day())
+            ||
+            (props.unavailable.filter(value => {
+                return moment(value, "YYYY-MM-DD").format("YYYY-MM-DD") === moment(date).format("YYYY-MM-DD")  
+            }).length > 0)
+            )
     }
 
     const blockDates = (date) =>  {
-        if (props.unavailable){
-            return (props.unavailable.includes(moment(date).format("YYYY-MM-DD")))
-        }
-        else
-            return false
+        return (
+            !props.showCalendar
+            ||
+            props.unavailable.includes(moment(date).format("YYYY-MM-DD"))
+            ||
+            props.offdays.includes(moment(date).day())
+            ||
+            (props.unavailable.filter(value => {
+                return moment(value, "YYYY-MM-DD").format("YYYY-MM-DD") === moment(date).format("YYYY-MM-DD")  
+            }).length > 0)
+            )
     }
 
     return(
-        <Box sx={{display: "flex", ml: 1, mr:1 }}>
-            <DatePicker 
-                disablePast
-                label = "Start"
-                value = {props.startDate}
-                renderInput={(params) => <TextField {...params} />}
-                onChange={(newValue => {
-                    props.setStartDate(newValue)
-                })}
-                inputFormat="DD/MM/YYYY"
-                views = {["day"]}
-                shouldDisableDate={blockDates}
-            />
-            <Box sx={{width: "5px"}}></Box>
-            <DatePicker  
-                disablePast
-                label = "End"
-                value = {props.endDate}
-                renderInput={(params) => <TextField {...params} />}
-                onChange={(newValue => {
-                    props.setEndDate(newValue)
-                })}
-                inputFormat="DD/MM/YYYY"
-                views = {["day"]}
-                shouldDisableDate={blockEndDate}
-            />
-        </Box>
+        <Grid container spacing={2} sx={{mb: 1}}>
+            <Grid item xs={6} >
+                <DatePicker 
+                    disablePast
+                    label = "Start"
+                    value = {props.startDate}
+                    renderInput={(params) => <TextField {...params} />}
+                    onChange={(newValue => {
+                        props.setStartDate(newValue)
+                    })}
+                    inputFormat="DD/MM/YYYY"
+                    views = {["day"]}
+                    shouldDisableDate={blockDates}
+                />
+            </Grid>
+            <Grid item xs={6} >
+                <DatePicker  
+                    disablePast
+                    label = "End"
+                    value = {props.endDate}
+                    renderInput={(params) => <TextField {...params} />}
+                    onChange={(newValue => {
+                        props.setEndDate(newValue)
+                    })}
+                    inputFormat="DD/MM/YYYY"
+                    views = {["day"]}
+                    shouldDisableDate={blockEndDate}
+                />
+            </Grid>
+        </Grid>
     )
 }
 

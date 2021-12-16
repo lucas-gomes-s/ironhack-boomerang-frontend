@@ -1,7 +1,7 @@
 import api from "../configs/api";
 import {useState, useEffect, useContext} from "react";
 import Navbar from "../components/Navigation/Navbar";
-import { Typography, Button, Paper, TextField} from "@mui/material";
+import { Typography, Button, Paper, TextField, MenuItem, Select, Grid, InputLabel} from "@mui/material";
 import CenteredLoading from "../components/CenteredLoading";
 import { useParams } from "react-router";
 import {CartContext} from "../contexts/cartContext";
@@ -18,6 +18,11 @@ function Productpage() {
     const [startDate, setStartDate] = useState(moment())
     const [endDate, setEndDate] = useState(null)
     const [unavailable, setUnavailable] = useState([])
+    const [variant, setVariants] = useState({})
+    const [selectedVariant, setSelectedVariants] = useState({})
+    const [filteredVariant, setFilteredVariants] = useState({})
+    const [price, setPrice] = useState(0)
+    const [itemPrice, setItemPrice] = useState(0)
     const cartContext = useContext(CartContext)
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('sm'));
 
@@ -25,24 +30,76 @@ function Productpage() {
     useEffect( () => {
     api.get(`/product/${_id}`)
     .then((response) => {
-        console.log(response.data[0])
         setProduct(response.data[0])
+        console.log(response.data[0])
         setLoading(false)
     })
+
+    
     }, [_id])
 
     useEffect(() => {
-        if (product.variants && product.variants[0].unavailable){
-            let aux = product.variants[0].unavailable
-            aux = aux.map(date => {
-                return moment(date, "YYYY-MM-DD").format("YYYY-MM-DD")
+        let aux = variant
+        if (product.variants) {
+            product.variants.map (currentVariant => {
+                Object.keys(currentVariant.specification).map(variantName => {
+                    if (!Object.keys(aux).includes(variantName)) {
+                        aux[variantName] = [currentVariant.specification[variantName]]
+                    }
+                    else {
+                        if (!aux[variantName].includes(currentVariant.specification[variantName])){
+                            aux[variantName] = [...aux[variantName], currentVariant.specification[variantName]] 
+                        }
+                    }
+                    return null
+                })
+                return null
             })
-            setUnavailable(aux)
+            setVariants(aux)
         }
     }, [product])
+    
+    useEffect(() => {
+        if (product.variants) {
+        let aux = product.variants
+        aux = aux.filter(value => {
+            for (let i=0; i<Object.keys(selectedVariant).length; i++) {
+                if (!(value.specification[Object.keys(selectedVariant)[i]] === selectedVariant[Object.keys(selectedVariant)[i]])){
+                    return false
+                }
+            }
+            return true
+        })
+        setFilteredVariants(aux)
+        }
 
-    const handleClick = () => {
+        if (filteredVariant.length === 1) {
+            setUnavailable(filteredVariant[0].unavailable)
+        }
+
+    }, [selectedVariant])
+
+    useEffect(() => {
+        if (endDate && startDate) {
+            if (endDate.diff(startDate, "days") > 0) {
+                let aux = product.pricing[Object.keys(product.pricing)[0]]
+                for (let i=0; i<Object.keys(product.pricing).length-1; i++) {
+                    if (endDate.diff(startDate, "days") >= Object.keys(product.pricing)[i]) {
+                        
+                        aux = product.pricing[Object.keys(product.pricing)[i+1]]
+                    }
+                }
+                setPrice(aux)
+            }
+        }
+    }, [startDate, endDate])
+
+    const handleCartClick = () => {
         const aux = [...cartContext.cart];
+        if (!startDate || !endDate || !filteredVariant.length===1 || endDate.diff(startDate, "days")<1) {
+            
+            return null
+        }
         const filteredCart = aux.filter(item => {
             return (item._id === _id) 
         })
@@ -57,15 +114,19 @@ function Productpage() {
             })
         }
         else {
-            aux.push({...product, startDate: startDate, endDate: endDate})
+            aux.push({...product, startDate: startDate, endDate: endDate, filteredVariant: filteredVariant, price: price*endDate.diff(startDate, "days")})
         }
         cartContext.setCart(aux)
         localStorage.setItem(
             "boomerangCart",
             JSON.stringify([ ...aux])
         );
-        console.log(localStorage.getItem("boomerangCart"))
     }
+
+    const handleVariantChange = (e) => {
+        setSelectedVariants({...selectedVariant, [e.target.name]: e.target.value})
+    }
+
     return(
         <>
             <Navbar/>
@@ -88,16 +149,58 @@ function Productpage() {
                                 <ImageCarousel sx={{mx: "auto"}} images={[product.img, product.img, product.img , product.img , product.img , product.img, product.img]}/>
                             </Box>
                             <Paper width={isSmallScreen ? "100%" : "50%"} sx={{m:2, p:2}}>
-                                
-                                <DatePair 
-                                startDate={startDate} 
-                                setStartDate={setStartDate} 
-                                endDate={endDate}
-                                setEndDate={setEndDate}
-                                unavailable = {unavailable}
-                                />
+                                <Paper sx={{p: 2, mb:2}}>
+                                    <Typography color="primary" variant="h6">Select the Specifications</Typography>
+                                    <Grid container spacing={2}>
+                                        {Object.keys(variant).map(variantName => {
+                                            return (
+                                                <Grid item xs={6} >
+                                                    <InputLabel id = {`label-${variantName}`}>{variantName}</InputLabel>
+                                                    <Select 
+                                                        labelId={`label-${variantName}`}
+                                                        select
+                                                        label = {variantName}
+                                                        name={variantName}
+                                                        onChange = {handleVariantChange}
+                                                        sx={{width: "100%"}}
+                                                    >
+                                                        {variant[variantName].map(value => {
+                                                            return(
+                                                                <MenuItem  key={value} value = {value}>
+                                                                    {value}
+                                                                </MenuItem>
+                                                            )
+                                                        })
+                                                        }
+                                                    </Select>
+                                                </Grid>
+                                            )  
+                                        })}
+                                    </Grid>
+                                </Paper>
+                                <Paper sx={{p: 2, mb:2}}>
+                                    <Typography color="primary" variant="h6">Select Rental Period</Typography>
+                                    <DatePair 
+                                    startDate={startDate} 
+                                    setStartDate={setStartDate} 
+                                    endDate={endDate}
+                                    setEndDate={setEndDate}
+                                    unavailable = {unavailable}
+                                    offdays = {product.stores[0].offDays}
+                                    showCalendar = {filteredVariant.length === 1}
+                                    />
+                                </Paper>
                                 <TextField type= "number" inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} />
-                                <Button onClick = {handleClick}>Add to Cart</Button>
+                                <Typography color = "secondary" variant="h5" align="center" sx={{my: 2}}>
+                                    {startDate && endDate?
+                                    `${endDate.diff(startDate, "days")} days X R$${price} = R$${price*endDate.diff(startDate, "days")}`
+                                    :
+                                    null
+                                    }
+                                </Typography>
+                                <Box sx={{display: "flex", justifyContent: "center"}}>
+                                    <Button onClick = {handleCartClick} >Add to Cart</Button>
+                                </Box>  
                             </Paper>
                         </Box>
                         <Paper sx={{p:2}}>

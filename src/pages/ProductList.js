@@ -4,8 +4,13 @@ import {useParams} from "react-router-dom"
 import Navbar from "../components/Navigation/Navbar"
 import ItensList from "../components/ItensList"
 import CenteredLoading from "../components/CenteredLoading"
+import {Box} from "@mui/system"
+import { Button} from "@mui/material"
+
 
 function Productlist() {
+    const display = 20
+    const [productDisplay, setProductDisplay] = useState(display)
     const [products, setProducts] = useState([])
     const [loading, setLoading] = useState(true)
     const {_id} = useParams() 
@@ -20,13 +25,24 @@ function Productlist() {
         )
     },[_id])
 
+    const handleClickProduct = () => {
+        setProductDisplay(productDisplay + display)
+    }
+
     return(
         <>
             <Navbar/>
             {loading? 
             <CenteredLoading/>
             :
-            <ItensList link="product" itens = {products}/>
+            <Box width="80vw" sx={{mx: "auto"}}>
+                <ItensList link="product" itens = {products} display={productDisplay}/>
+                <Box sx={{display: "flex", justifyContent: "center"}} >
+                    <Button onClick = {handleClickProduct}>
+                        See More
+                    </Button>
+                </Box>
+            </Box>
             }
         </>
     )

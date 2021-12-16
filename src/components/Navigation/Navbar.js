@@ -45,6 +45,10 @@ function Navbar() {
         setOpenCart(!openCart)
     }
 
+    const handleChange =(e) => {
+        console.log(e.target.value)
+    }
+
     return (
         <AppBar position="static" color="primary">
             <Toolbar sx={{display: "flex", justifyContent: "space-between"}}>
@@ -58,8 +62,9 @@ function Navbar() {
                 <Autocomplete 
                     options={products}
                     freeSolo
-                    renderInput={params => <TextField {...params} label="search"/>}
+                    renderInput={params => <TextField {...params} label="Search"/>}
                     sx = {{width: "30vw"}}
+                    onChange = {handleChange}
                 />
                 <Box>
                     {authContext.user?

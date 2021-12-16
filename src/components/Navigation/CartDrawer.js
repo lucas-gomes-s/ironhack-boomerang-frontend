@@ -9,8 +9,6 @@ import moment from "moment"
 import DeleteIcon from '@mui/icons-material/Delete';
 import {Link} from "react-router-dom"
 
-
-
 function CartDrawer(props) {
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('sm'));
     const cartContext = useContext(CartContext)
@@ -45,6 +43,7 @@ function CartDrawer(props) {
                             <Typography>{item.name}</Typography>
                             <Typography>{moment(item.startDate).format("DD/MM/YYYY")}</Typography>
                             <Typography>{moment(item.endDate).format("DD/MM/YYYY")}</Typography>
+                            <Typography>{`R$${item.price}`}</Typography>
                             <Button id = {item._id} onClick={handleClick} > <DeleteIcon color="primary"/> </Button>
                             </>
                         )
