@@ -18,9 +18,6 @@ function Checkout() {
     const cartContext = useContext(CartContext)
     const location = useLocation()
 
-    useEffect(()=> {
-        console.log(location)
-    }, [])
 
     let pixInfo = {
         transaction_amount: "1",

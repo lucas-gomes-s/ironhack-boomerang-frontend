@@ -9,7 +9,6 @@ function CartContextProvider(props) {
         const storedCart = localStorage.getItem("boomerangCart");
    
         const parsedStoredCart = JSON.parse(storedCart || '""');
-        console.log(parsedStoredCart)
 
         if (parsedStoredCart.length>0) {
           setCart([ ...parsedStoredCart ]);

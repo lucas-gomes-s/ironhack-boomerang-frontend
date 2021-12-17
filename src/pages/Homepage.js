@@ -35,7 +35,6 @@ function Homepage() {
         api.get("/category")
         .then (
             response => {
-                console.log(response)
                 setCategories(response.data)
             }
         )
@@ -44,7 +43,6 @@ function Homepage() {
         )
         .then ( 
             response => {
-                console.log(response)
                 setStores(response.data)
             }
         )
@@ -53,7 +51,6 @@ function Homepage() {
         )
         .then(
             response => {
-                console.log(response)
                 setProducts(response.data)
                 setLoading(false)
             }

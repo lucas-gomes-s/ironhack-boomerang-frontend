@@ -8,7 +8,6 @@ function ImageNavigator (props) {
     //const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('sm'));
 
     const handleClick = (event) => {
-        console.log(event.target)
         setImage(event.target.id)
     }
 

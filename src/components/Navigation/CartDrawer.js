@@ -17,7 +17,6 @@ function CartDrawer(props) {
     const handleClick = (e) => {
         let aux = cartContext.cart
         aux = aux.filter(item => item._id !== e.currentTarget.id)
-        console.log(aux)
         cartContext.setCart(aux)
         localStorage.setItem(
             "boomerangCart",

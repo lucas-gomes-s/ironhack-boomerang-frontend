@@ -18,12 +18,10 @@ function AuthContextProvider(props) {
                         firebaseId: user.uid
                     })
                     setUser({...user.auth.currentUser, ...newUser.data})
-                    console.log({...user.auth.currentUser, ...newUser.data})
 
                 } 
                 else {
                     setUser({...user.auth.currentUser, ...dbUser.data[0]})
-                    console.log({...user.auth.currentUser, ...dbUser.data[0]})
                 }
             }
         })

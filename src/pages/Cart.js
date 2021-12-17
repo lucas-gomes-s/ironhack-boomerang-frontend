@@ -22,7 +22,6 @@ function Cart() {
     const handleClick = (e) => {
         let aux = cartContext.cart
         aux = aux.filter(item => item._id !== e.currentTarget.id)
-        console.log(aux)
         cartContext.setCart(aux)
         localStorage.setItem(
             "boomerangCart",
@@ -36,7 +35,6 @@ function Cart() {
         setError(false)
         try {
         const response = await axios.post("https://boomerang-ironhack.herokuapp.com/checkout/freight", {destination: zipCode, origin: cartContext.cart[0].stores[0].zipCode})
-        console.log(response)
         setFreight({calculated: true, value: parseFloat(response.data.value.toFixed(2))})
         setFreightLoading(false)
         }
@@ -47,7 +45,6 @@ function Cart() {
     }
 
     const handleChange = (e) => {
-        console.log(cartContext.cart)
         setZipcode(e.target.value)
     }
 

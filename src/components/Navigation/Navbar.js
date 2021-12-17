@@ -38,7 +38,6 @@ function Navbar() {
                     aux.push(response.data[i].name)
                 }
             }
-            console.log(aux)
             setProductNames(aux)
         })
         .catch(error => console.log(error))
@@ -54,8 +53,6 @@ function Navbar() {
         let filteredProducts = products.filter(product => {
             return (product.name === value)
         })
-        console.log(e.currentTarget.innerHTML)
-        console.log(filteredProducts)
         if (filteredProducts.length > 0) {
             navigate(`/product/${filteredProducts[0]._id}`, {replace: true})
         }
