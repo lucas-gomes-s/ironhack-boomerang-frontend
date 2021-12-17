@@ -9,7 +9,7 @@ function DatePair(props) {
         return (
             !props.showCalendar
             ||
-            date<props.startDate
+            date<=props.startDate
             ||
             props.offdays.includes(moment(date).day())
             ||

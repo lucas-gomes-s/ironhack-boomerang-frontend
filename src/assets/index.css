@@ -22,16 +22,59 @@ code {
   border-color: white;
   
 }
-
-.flex-row {
-  display: flex
-}
-
 .flex-column {
   display: flex;
   flex-direction: column;
 }
 
+.between {
+  justify-content: space-between;
+}
+
+.around {
+  justify-content: space-between;
+}
+
+.flex-row {
+  display: flex;
+}
+
+.flex-row-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-row-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.bgc-0 {
+  background-color: #F5F5F5;
+}
+
+.bgc-1 {
+  background-color: #A56DFF;
+}
+
+.bgc-2 {
+  background-color: #0E153A;
+}
+
+.bgc-3 {
+  background-color: #D32F7D;
+}
+
+
+
+
 .invalid {
   border: red solid 2px
 }
+
+.img-contain {
+  object-fit: scale-down;
+}
+

@@ -2,7 +2,7 @@ import axios from "axios"
 
 const apis = {
     development: "http://localhost:4000",
-    production: "Only after deploy"
+    production: "https://boomerang-ironhack.herokuapp.com"
 }
 
 const api = axios.create({

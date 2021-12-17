@@ -4,6 +4,7 @@ import {useState, useEffect} from "react"
 
 import Navbar from "../components/Navigation/Navbar"
 import HomeCarousel from "../components/Display/HomeCarousel"
+import HomeCarouselTwo from "../components/Display/HomeCarouselNew"
 import ItensList from "../components/ItensList"
 import CenteredLoading from "../components/CenteredLoading"
 
@@ -71,7 +72,7 @@ function Homepage() {
             :
             <>
                 <Box sx={{mx: "auto", my: 2, p:2}} width="80vw">
-                    <HomeCarousel objects={categories}/>
+                    <HomeCarouselTwo objects={categories}/>
                 </Box>
                 <Box sx={{backgroundColor: "#0E153A", width: "80vw", p:2, mx:"auto"}}> 
                     <Typography variant="h4" color="white">

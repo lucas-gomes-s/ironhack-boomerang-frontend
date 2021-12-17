@@ -22,7 +22,6 @@ function Productpage() {
     const [selectedVariant, setSelectedVariants] = useState({})
     const [filteredVariant, setFilteredVariants] = useState({})
     const [price, setPrice] = useState(0)
-    const [itemPrice, setItemPrice] = useState(0)
     const cartContext = useContext(CartContext)
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('sm'));
 
@@ -35,12 +34,12 @@ function Productpage() {
         setLoading(false)
     })
 
-    
+
     }, [_id])
 
     useEffect(() => {
-        let aux = variant
         if (product.variants) {
+            let aux = {}
             product.variants.map (currentVariant => {
                 Object.keys(currentVariant.specification).map(variantName => {
                     if (!Object.keys(aux).includes(variantName)) {
@@ -71,13 +70,19 @@ function Productpage() {
             return true
         })
         setFilteredVariants(aux)
-        }
+    }
+
+    }, [selectedVariant, product])
+
+    useEffect(() => {
 
         if (filteredVariant.length === 1) {
             setUnavailable(filteredVariant[0].unavailable)
         }
-
-    }, [selectedVariant])
+        else {
+            setUnavailable([])
+        }
+    }, [filteredVariant])
 
     useEffect(() => {
         if (endDate && startDate) {
@@ -92,7 +97,7 @@ function Productpage() {
                 setPrice(aux)
             }
         }
-    }, [startDate, endDate])
+    }, [startDate, endDate, product])
 
     const handleCartClick = () => {
         const aux = [...cartContext.cart];
@@ -146,53 +151,54 @@ function Productpage() {
                         </Typography>
                         <Box className = {isSmallScreen ? "flex-column" : "flex-row" }>
                             <Box width={isSmallScreen ? "80%" : "50%"} sx={{m:2, mx: "auto"}}>
-                                <ImageCarousel sx={{mx: "auto"}} images={[product.img, product.img, product.img , product.img , product.img , product.img, product.img]}/>
+                                <ImageCarousel sx={{mx: "auto"}} images={product.secondaryImgs.length>0?product.secondaryImgs.concat(product.img):[product.img]}/>
                             </Box>
-                            <Paper width={isSmallScreen ? "100%" : "50%"} sx={{m:2, p:2}}>
-                                <Paper sx={{p: 2, mb:2}}>
-                                    <Typography color="primary" variant="h6">Select the Specifications</Typography>
-                                    <Grid container spacing={2}>
-                                        {Object.keys(variant).map(variantName => {
-                                            return (
-                                                <Grid item xs={6} >
-                                                    <InputLabel id = {`label-${variantName}`}>{variantName}</InputLabel>
-                                                    <Select 
-                                                        labelId={`label-${variantName}`}
-                                                        select
-                                                        label = {variantName}
-                                                        name={variantName}
-                                                        onChange = {handleVariantChange}
-                                                        sx={{width: "100%"}}
-                                                    >
-                                                        {variant[variantName].map(value => {
-                                                            return(
-                                                                <MenuItem  key={value} value = {value}>
-                                                                    {value}
-                                                                </MenuItem>
-                                                            )
-                                                        })
-                                                        }
-                                                    </Select>
-                                                </Grid>
-                                            )  
-                                        })}
-                                    </Grid>
-                                </Paper>
-                                <Paper sx={{p: 2, mb:2}}>
-                                    <Typography color="primary" variant="h6">Select Rental Period</Typography>
-                                    <DatePair 
-                                    startDate={startDate} 
-                                    setStartDate={setStartDate} 
-                                    endDate={endDate}
-                                    setEndDate={setEndDate}
-                                    unavailable = {unavailable}
-                                    offdays = {product.stores[0].offDays}
-                                    showCalendar = {filteredVariant.length === 1}
-                                    />
-                                </Paper>
+                            <Paper width={isSmallScreen ? "100%" : "50%"} sx={{m:2, p:2}} className="flex-column around">
+                                <Box>
+                                    <Paper sx={{p: 2, mb:2}}>
+                                        <Typography color="primary" variant="h6">Select the Specifications</Typography>
+                                        <Grid container spacing={2}>
+                                            {Object.keys(variant).map((variantName, index) => {
+                                                return (
+                                                    <Grid item xs={6} key = {index}>
+                                                        <InputLabel id = {`label-${variantName}`}>{variantName}</InputLabel>
+                                                        <Select 
+                                                            labelId={`label-${variantName}`}
+                                                            label = {variantName}
+                                                            name={variantName}
+                                                            onChange = {handleVariantChange}
+                                                            sx={{width: "100%"}}
+                                                        >
+                                                            {variant[variantName].map(value => {
+                                                                return(
+                                                                    <MenuItem  key={value} value = {value}>
+                                                                        {value}
+                                                                    </MenuItem>
+                                                                )
+                                                            })
+                                                            }
+                                                        </Select>
+                                                    </Grid>
+                                                )  
+                                            })}
+                                        </Grid>
+                                    </Paper>
+                                    <Paper sx={{p: 2, mb:2}}>
+                                        <Typography color="primary" variant="h6">Select Rental Period</Typography>
+                                        <DatePair 
+                                        startDate={startDate} 
+                                        setStartDate={setStartDate} 
+                                        endDate={endDate}
+                                        setEndDate={setEndDate}
+                                        unavailable = {unavailable}
+                                        offdays = {product.stores[0].offDays}
+                                        showCalendar = {product.variants.length === 0 ||filteredVariant.length === 1}
+                                        />
+                                    </Paper>
+                                </Box>
                                 <TextField type= "number" inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} />
                                 <Typography color = "secondary" variant="h5" align="center" sx={{my: 2}}>
-                                    {startDate && endDate?
+                                    {startDate && endDate &&moment(endDate, "YYYY-MM-DD")>moment(startDate, "YYYY-MM-DD")?
                                     `${endDate.diff(startDate, "days")} days X R$${price} = R$${price*endDate.diff(startDate, "days")}`
                                     :
                                     null

@@ -1,6 +1,6 @@
 import {Box} from "@mui/system"
 import Carousel from 'react-material-ui-carousel'
-import { Typography, Button} from "@mui/material";
+import { Typography, Button, Grid} from "@mui/material";
 import {useMediaQuery, useTheme} from "@material-ui/core";
 import {Link} from "react-router-dom"
 

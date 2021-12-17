@@ -1,9 +1,9 @@
 
 import {useMediaQuery, useTheme} from "@material-ui/core"
-import {Typography, SwipeableDrawer, List, Button} from "@mui/material";
+import {Typography, SwipeableDrawer, List, Button, Paper} from "@mui/material";
 import {Box} from "@mui/system"
 import {CartContext} from "../../contexts/cartContext";
-import {AuthContext} from "../../contexts/authContext"
+import {AuthContext} from "../../contexts/authContext";
 import {useContext} from "react";
 import moment from "moment"
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -39,13 +39,13 @@ function CartDrawer(props) {
             <List>
                 {  cartContext.cart.map(item=> {
                         return(
-                            <>
+                            <Paper key={item._id}>
                             <Typography>{item.name}</Typography>
                             <Typography>{moment(item.startDate).format("DD/MM/YYYY")}</Typography>
                             <Typography>{moment(item.endDate).format("DD/MM/YYYY")}</Typography>
                             <Typography>{`R$${item.price}`}</Typography>
                             <Button id = {item._id} onClick={handleClick} > <DeleteIcon color="primary"/> </Button>
-                            </>
+                            </Paper>
                         )
                     })
 
@@ -53,9 +53,9 @@ function CartDrawer(props) {
             </List>
             <Button onClick={cartContext.clearCart}>Clear Cart</Button>
             {authContext.user?
-                <Link to = "/checkout" className="clean-link" color="#F5F5F5"> Go to Checkout</Link>
+                <Link to = "/cart" className="clean-link" color="#F5F5F5"> Go to Cart</Link>
                 :
-                <Link to = "/login" className="clean-link" color="#F5F5F5"> Log-in</Link>
+                <Link to = "/signin" className="clean-link" color="#F5F5F5"> Sign in</Link>
             }    
         </Box>
     </SwipeableDrawer>

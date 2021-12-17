@@ -4,7 +4,8 @@ import Signin from "../pages/Signin"
 import Homepage from "../pages/Homepage"
 import Productlist from "../pages/ProductList"
 import Productpage from "../pages/Productpage"
-import dotenv from "dotenv"
+import Cart from "../pages/Cart"
+
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path = "/signin" element={<Signin/>}/>
         <Route path = "/category/:_id" element={<Productlist/>}/>
         <Route path = "/product/:_id" element= {<Productpage/>}/>
+        <Route path = "/cart" element= {<Cart/>}/>
       </Routes>
     </div>
   );

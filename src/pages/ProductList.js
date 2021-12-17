@@ -5,13 +5,14 @@ import Navbar from "../components/Navigation/Navbar"
 import ItensList from "../components/ItensList"
 import CenteredLoading from "../components/CenteredLoading"
 import {Box} from "@mui/system"
-import { Button} from "@mui/material"
+import {Button, Typography} from "@mui/material"
 
 
 function Productlist() {
     const display = 20
     const [productDisplay, setProductDisplay] = useState(display)
     const [products, setProducts] = useState([])
+    const [category, setCategory] = useState([])
     const [loading, setLoading] = useState(true)
     const {_id} = useParams() 
 
@@ -19,7 +20,7 @@ function Productlist() {
         api.get(`/category/${_id}`)
         .then(response =>{
             setProducts(response.data[0].products)
-            console.log(response.data)
+            setCategory(response.data[0])
             setLoading(false)
         }
         )
@@ -35,7 +36,8 @@ function Productlist() {
             {loading? 
             <CenteredLoading/>
             :
-            <Box width="80vw" sx={{mx: "auto"}}>
+            <Box width="80vw" sx={{mx: "auto", my: 2}}>
+                <Typography variant="h3" color="#D32F7D">{category.name}</Typography>
                 <ItensList link="product" itens = {products} display={productDisplay}/>
                 <Box sx={{display: "flex", justifyContent: "center"}} >
                     <Button onClick = {handleClickProduct}>

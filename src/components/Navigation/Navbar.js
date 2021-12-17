@@ -1,6 +1,6 @@
 import {useContext, useState, useEffect} from "react"
 
-import { AppBar, Toolbar, Autocomplete, TextField} from "@mui/material";
+import { AppBar, Toolbar, Autocomplete, TextField, Button} from "@mui/material";
 import {useMediaQuery, useTheme} from "@material-ui/core"
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {Box} from "@mui/system"
@@ -8,7 +8,7 @@ import {Box} from "@mui/system"
 import {AuthContext} from "../../contexts/authContext"
 import {CartContext} from "../../contexts/cartContext"
 
-import {Link} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 
 import logo from "../../imgs/logo_02.png"
 import smallLogo from "../../imgs/logo_02_small.png"
@@ -22,13 +22,16 @@ import api from "../../configs/api"
 function Navbar() {
     const authContext = useContext(AuthContext)
     const cartContext = useContext(CartContext);
+    const navigate = useNavigate();
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('sm'));
     const [openCart, setOpenCart] = useState(false)
     const [products, setProducts] = useState([])
+    const [productNames, setProductNames] = useState([])
 
     useEffect(()=> {
         api.get("/product")
         .then(response=> {
+            setProducts(response.data)
             let aux = []
             for (let i=0; i<response.data.length; i++) {
                 if (!aux.includes(response.data[i].name)) {
@@ -36,7 +39,7 @@ function Navbar() {
                 }
             }
             console.log(aux)
-            setProducts(aux)
+            setProductNames(aux)
         })
         .catch(error => console.log(error))
     }, [])
@@ -45,12 +48,21 @@ function Navbar() {
         setOpenCart(!openCart)
     }
 
+
     const handleChange =(e) => {
-        console.log(e.target.value)
+        let value = e.currentTarget.innerHTML
+        let filteredProducts = products.filter(product => {
+            return (product.name === value)
+        })
+        console.log(e.currentTarget.innerHTML)
+        console.log(filteredProducts)
+        if (filteredProducts.length > 0) {
+            navigate(`/product/${filteredProducts[0]._id}`, {replace: true})
+        }
     }
 
     return (
-        <AppBar position="static" color="primary">
+        <AppBar position="static" color="primary" >
             <Toolbar sx={{display: "flex", justifyContent: "space-between"}}>
                 <Link to="/">
                     <img 
@@ -60,20 +72,24 @@ function Navbar() {
                     />
                 </Link>
                 <Autocomplete 
-                    options={products}
+                    options={productNames}
                     freeSolo
-                    renderInput={params => <TextField {...params} label="Search"/>}
-                    sx = {{width: "30vw"}}
+                    renderInput={params => <TextField {...params} label="Search" />}
+                    sx = {{width: "30vw", backgroundColor: "white"}}
                     onChange = {handleChange}
                 />
                 <Box>
+                    <ShoppingCartIcon onClick={handleClick}/>
+                    <span sx={{position: "absolute", margin: "0 0 -20 0"}}>{Object.keys(cartContext.cart).length}</span>
                     {authContext.user?
                         <SignOutButton/>
                      :
-                        <Link to="/signin" className="clean-link">Sign In</Link>
+                        <Link to="/signin" className="clean-link">
+                        
+                        <Button color="secondary"> Sign In </Button>
+                        
+                        </Link>
                     }
-                    <ShoppingCartIcon onClick={handleClick}/>
-                    <span sx={{verticalAlign: "top", margin: "0 0 -20 0"}}>{Object.keys(cartContext.cart).length}</span>
                 </Box>
                 <CartDrawer state={openCart} handleClick={handleClick}/>    
             </Toolbar>
