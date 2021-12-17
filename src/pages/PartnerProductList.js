@@ -19,7 +19,7 @@ function PartnerProductlist() {
     useEffect( () => {
         api.get(`/store/${_id}`)
         .then(response =>{
-            //console.log(response.data)
+            console.log(response.data)
             setProducts(response.data.products)
             setCategory(response.data)
             setLoading(false)
