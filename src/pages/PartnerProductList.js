@@ -8,7 +8,7 @@ import {Box} from "@mui/system"
 import {Button, Typography} from "@mui/material"
 
 
-function Productlist() {
+function PartnerProductlist() {
     const display = 20
     const [productDisplay, setProductDisplay] = useState(display)
     const [products, setProducts] = useState([])
@@ -17,10 +17,11 @@ function Productlist() {
     const {_id} = useParams() 
 
     useEffect( () => {
-        api.get(`/category/${_id}`)
+        api.get(`/store/${_id}`)
         .then(response =>{
-            setProducts(response.data[0].products)
-            setCategory(response.data[0])
+            //console.log(response.data)
+            setProducts(response.data.products)
+            setCategory(response.data)
             setLoading(false)
         }
         )
@@ -41,7 +42,11 @@ function Productlist() {
                     <Typography variant="h3" color="white">{category.name}</Typography>
                 </Box>
                 <Box className="bgc-0" sx={{px: 2}}>
-                    <Typography variant="h6" color="#D32F7D">{category.description}</Typography>
+                    {category.description?
+                        <Typography variant="h6" color="#D32F7D">{category.description}</Typography>
+                        :
+                        null
+                    }
                     <ItensList link="product" itens = {products} display={productDisplay}/>
                     <Box sx={{display: "flex", justifyContent: "center"}}  >
                         <Button onClick = {handleClickProduct}>
@@ -55,4 +60,4 @@ function Productlist() {
     )
 }
 
-export default Productlist
+export default PartnerProductlist
