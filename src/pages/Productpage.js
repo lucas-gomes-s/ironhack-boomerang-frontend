@@ -20,7 +20,7 @@ function Productpage() {
     const [unavailable, setUnavailable] = useState([])
     const [variant, setVariants] = useState({})
     const [selectedVariant, setSelectedVariants] = useState({})
-    const [filteredVariant, setFilteredVariants] = useState({})
+    const [filteredVariant, setFilteredVariants] = useState([])
     const [price, setPrice] = useState(0)
     const cartContext = useContext(CartContext)
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('sm'));
@@ -192,11 +192,10 @@ function Productpage() {
                                         setEndDate={setEndDate}
                                         unavailable = {unavailable}
                                         offdays = {product.stores[0].offDays}
-                                        showCalendar = {product.variants.length === 0 ||filteredVariant.length === 1}
+                                        showCalendar = {product.variants.length === 0 || filteredVariant.length === 1}
                                         />
                                     </Paper>
                                 </Box>
-                                <TextField type= "number" inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }} />
                                 <Typography color = "secondary" variant="h5" align="center" sx={{my: 2}}>
                                     {startDate && endDate &&moment(endDate, "YYYY-MM-DD")>moment(startDate, "YYYY-MM-DD")?
                                     `${endDate.diff(startDate, "days")} days X R$${price} = R$${price*endDate.diff(startDate, "days")}`
@@ -204,9 +203,7 @@ function Productpage() {
                                     null
                                     }
                                 </Typography>
-                                <Box sx={{display: "flex", justifyContent: "center"}}>
-                                    <Button onClick = {handleCartClick} >Add to Cart</Button>
-                                </Box>  
+                                <Button onClick = {handleCartClick} variant="contained">Add to Cart</Button>
                             </Paper>
                         </Box>
                         <Paper sx={{p:2}}>

@@ -16,8 +16,8 @@ function SignOutButton() {
 
 
     return (
-        <Button onClick={onClick} color="secondary">
-            Log Out
+        <Button onClick={onClick} variant="outlined" color="secondary">
+            Sign Out
         </Button>
     )
 }

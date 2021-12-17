@@ -67,7 +67,9 @@ code {
   background-color: #D32F7D;
 }
 
-
+.full-width {
+  width: 100%
+}
 
 
 .invalid {

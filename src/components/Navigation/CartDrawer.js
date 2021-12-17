@@ -1,6 +1,6 @@
 
 import {useMediaQuery, useTheme} from "@material-ui/core"
-import {Typography, SwipeableDrawer, List, Button, Paper} from "@mui/material";
+import {Typography, SwipeableDrawer, List, Button, Paper, Grid} from "@mui/material";
 import {Box} from "@mui/system"
 import {CartContext} from "../../contexts/cartContext";
 import {AuthContext} from "../../contexts/authContext";
@@ -40,23 +40,44 @@ function CartDrawer(props) {
                 {  cartContext.cart.map(item=> {
                         return(
                             <Paper key={item._id}>
-                            <Typography>{item.name}</Typography>
-                            <Typography>{moment(item.startDate).format("DD/MM/YYYY")}</Typography>
-                            <Typography>{moment(item.endDate).format("DD/MM/YYYY")}</Typography>
-                            <Typography>{`R$${item.price}`}</Typography>
-                            <Button id = {item._id} onClick={handleClick} > <DeleteIcon color="primary"/> </Button>
+                                <Grid container sx={{m:1}}>
+                                    <Grid item xs={12}>
+                                        <Typography sx={{fontWeight: "bold"}}>{item.name}</Typography>
+                                    </Grid>
+                                    <Grid xs={5}>
+                                        <img
+                                            src={item.img}
+                                            width="100%"
+                                        />
+                                    </Grid>
+                                    <Grid container xs={5} direction="column" justifyContent="center">
+                                        <Typography>{moment(item.startDate).format("DD/MM/YYYY")}</Typography>
+                                        <Typography>{moment(item.endDate).format("DD/MM/YYYY")}</Typography>
+                                        <Typography>{`Price: R$${item.price}`}</Typography>
+                                    </Grid>
+                                    <Grid container justifyContent="center" xs={2}>
+                                        <Button id = {item._id} onClick={handleClick} > <DeleteIcon color="primary"/> </Button>
+                                    </Grid>
+                                </Grid>
                             </Paper>
                         )
                     })
 
                 }
             </List>
-            <Button onClick={cartContext.clearCart}>Clear Cart</Button>
-            {authContext.user?
-                <Link to = "/cart" className="clean-link" color="#F5F5F5"> Go to Cart</Link>
-                :
-                <Link to = "/signin" className="clean-link" color="#F5F5F5"> Sign in</Link>
-            }    
+            <Grid container justifyContent={"space-around"}>
+                <Button onClick={cartContext.clearCart} variant="outlined">Clear Cart</Button>
+                {authContext.user?
+                    
+                    <Link to = "/cart" className="clean-link" color="#F5F5F5" > 
+                        <Button variant="contained">Go to Cart</Button>
+                    </Link>
+                    :
+                    <Link to = "/signin" className="clean-link" color="#F5F5F5"> 
+                        <Button variant="contained">Sign In</Button>
+                    </Link>
+                }    
+            </Grid>
         </Box>
     </SwipeableDrawer>
     )

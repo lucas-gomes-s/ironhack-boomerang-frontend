@@ -1,6 +1,6 @@
 import {useContext, useState, useEffect} from "react"
 
-import { AppBar, Toolbar, Autocomplete, TextField, Button} from "@mui/material";
+import { AppBar, Toolbar, Autocomplete, TextField, Button, Badge, IconButton} from "@mui/material";
 import {useMediaQuery, useTheme} from "@material-ui/core"
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {Box} from "@mui/system"
@@ -79,14 +79,17 @@ function Navbar() {
                     onChange = {handleChange}
                 />
                 <Box>
-                    <ShoppingCartIcon onClick={handleClick}/>
-                    <span sx={{position: "absolute", margin: "0 0 -20 0"}}>{Object.keys(cartContext.cart).length}</span>
+                    <IconButton sx={{mx: 2}}>
+                        <Badge badgeContent={Object.keys(cartContext.cart).length} color="secondary">
+                            <ShoppingCartIcon sx={{color: "white"}} onClick={handleClick}/>
+                        </Badge>
+                    </IconButton>
                     {authContext.user?
                         <SignOutButton/>
                      :
                         <Link to="/signin" className="clean-link">
                         
-                        <Button color="secondary"> Sign In </Button>
+                        <Button variant="outlined" color="secondary"> Sign In </Button>
                         
                         </Link>
                     }

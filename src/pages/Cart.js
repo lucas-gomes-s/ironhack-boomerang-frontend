@@ -47,6 +47,7 @@ function Cart() {
     }
 
     const handleChange = (e) => {
+        console.log(cartContext.cart)
         setZipcode(e.target.value)
     }
 
@@ -142,11 +143,14 @@ function Cart() {
                 <Box className="flex-row-center">
                     {
                         authContext.user ?
-                        <Link className="clean-link bgc-1" to ="/checkout"> 
-                            <Button variant="contained">
-                                Proceed to Checkout 
-                            </Button>
-                        </Link>
+                            freight.calculated?
+                                <Link className="clean-link bgc-1" to ="/checkout" state= {freight.value}> 
+                                    <Button variant="contained" disabled={!freight.calculated}>
+                                        Proceed to Checkout 
+                                    </Button>
+                                </Link>
+                            :
+                                <Typography variant="h6" color="#D32F7D">Please calculate delivery fee to procceed</Typography>
                         :
                         <Link className="clean-link bgc-1" to ="/signin"> Login to Continue</Link>
                     }

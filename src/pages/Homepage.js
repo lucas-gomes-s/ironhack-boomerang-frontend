@@ -75,7 +75,7 @@ function Homepage() {
                     <HomeCarouselTwo objects={categories}/>
                 </Box>
                 <Box sx={{backgroundColor: "#0E153A", width: "80vw", p:2, mx:"auto"}}> 
-                    <Typography variant="h4" color="white">
+                    <Typography variant="h4" color="#D32F7D">
                         Top Products
                     </Typography>
                     <ItensList link="product" itens = {products} display={productDisplay}/>
@@ -96,8 +96,8 @@ function Homepage() {
                         </Button>
                     </Box>
                 </Box>
-                <Box sx={{backgroundColor: "#F5F5F5", width: "80vw", p:2, mx:"auto"}}> 
-                    <Typography variant="h4" color="#A56DFF">
+                <Box className ="bgc-1" sx={{width: "80vw", p:2, mx:"auto"}}> 
+                    <Typography variant="h4" color="white">
                         Partners
                     </Typography>
                     <ItensList link="store" itens = {stores} display={storeDisplay}/>
