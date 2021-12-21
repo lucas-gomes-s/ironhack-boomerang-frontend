@@ -3,7 +3,6 @@ import api from "../configs/api"
 import {useState, useEffect} from "react"
 
 import Navbar from "../components/Navigation/Navbar"
-import HomeCarousel from "../components/Display/HomeCarousel"
 import HomeCarouselTwo from "../components/Display/HomeCarouselNew"
 import ItensList from "../components/ItensList"
 import CenteredLoading from "../components/CenteredLoading"

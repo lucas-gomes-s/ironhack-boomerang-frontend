@@ -1,17 +1,13 @@
-import { Typography, Paper, Grid, Button, TextField, InputLabel, FormControl } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Typography, Paper, Grid, Button, TextField} from "@mui/material";
 import {Box} from "@mui/system";
 import {CartContext} from "../contexts/cartContext";
-import { AuthContext } from "../contexts/authContext";
-import {useEffect, useContext, useState} from "react"
-import {Link, useLocation} from "react-router-dom"
+import {useContext, useState} from "react"
+import {useLocation} from "react-router-dom"
 import Navbar from "../components/Navigation/Navbar";
-import moment from "moment";
 import api from "../configs/api"
 import CenteredLoading from "../components/CenteredLoading"
 
 function Checkout() {
-    const [clickable, setClickable] = useState(true)
     const [pixGenerated, setPixGenerated] = useState(false)
     const [pixLoading, setPixLoading] = useState(false)
     const [mercadoPago, setMercadoPago] = useState({})
@@ -43,9 +39,9 @@ function Checkout() {
       }
 
     const handleClick = async () => {
-        pixInfo = {...pixInfo, transaction_amount: cartContext.cart.reduce((a,b) => {return a+b.price}, 0) + location.state}
+        //pixInfo = {...pixInfo, transaction_amount: (cartContext.cart.reduce((a,b) => {return a+b.price}, 0) + location.state).toString()}
+        console.log(pixInfo)
         setPixLoading(true)
-        setClickable(false)
         const response = await api.post("/checkout/pix", pixInfo)
         setMercadoPago(response.data)
         setPixLoading(false)
@@ -88,7 +84,7 @@ function Checkout() {
                         {pixGenerated?
                             <>
                                 <Typography align="center"> Order Generated, please pay using the following QR Code</Typography>
-                                <img src={`data:image/jpeg;base64,${mercadoPago.body.point_of_interaction.transaction_data.qr_code_base64}`} className="full-width"/>
+                                <img src={`data:image/jpeg;base64,${mercadoPago.body.point_of_interaction.transaction_data.qr_code_base64}`} className="full-width" alt="QR Code for payment"/>
                                 <Typography align="center"> Or copy and paste the following code</Typography>
                                 <Box className="flex-row-center">
                                     <TextField

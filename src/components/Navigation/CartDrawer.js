@@ -43,10 +43,11 @@ function CartDrawer(props) {
                                     <Grid item xs={12}>
                                         <Typography sx={{fontWeight: "bold"}}>{item.name}</Typography>
                                     </Grid>
-                                    <Grid xs={5}>
+                                    <Grid item xs={5}>
                                         <img
                                             src={item.img}
                                             width="100%"
+                                            alt={item.name}
                                         />
                                     </Grid>
                                     <Grid container xs={5} direction="column" justifyContent="center">

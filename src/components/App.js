@@ -7,6 +7,7 @@ import Productpage from "../pages/Productpage"
 import Cart from "../pages/Cart"
 import Checkout from "../pages/Checkout"
 import PartnerProductlist from "../pages/PartnerProductList"
+import ProtectedRoute from "../pages/ProtectedRoute"
 
 
 
@@ -20,8 +21,8 @@ function App() {
         <Route path = "/category/:_id" element={<Productlist/>}/>
         <Route path = "/store/:_id" element={<PartnerProductlist/>}/>
         <Route path = "/product/:_id" element= {<Productpage/>}/>
-        <Route path = "/cart" element= {<Cart/>}/>
-        <Route path = "/checkout" element= {<Checkout/>}/>
+        <Route path = "/cart" element= {<ProtectedRoute component={Cart}/>}/>
+        <Route path = "/checkout" element= {<ProtectedRoute component={Checkout}/>}/>
       </Routes>
     </div>
   );

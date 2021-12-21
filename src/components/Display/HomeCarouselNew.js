@@ -1,30 +1,11 @@
-import {Box} from "@mui/system"
 import Carousel from 'react-material-ui-carousel'
-import { Typography, Button, Grid} from "@mui/material";
+import { Typography, Grid} from "@mui/material";
 import {useMediaQuery, useTheme} from "@material-ui/core";
 import {Link} from "react-router-dom"
 
 
 function HomeCarouselTwo (props) {
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('sm'));
-    const bgc = [
-        "#F5F5F5",
-        "#A56DFF",
-        "#0E153A"
-    ]
-
-    const titleColor = [
-        "#D32F7D",
-        "#22252C",
-        "white"
-    ]
-
-    const textColor = [
-        "#A56DFF",
-        "#F5F5F5",
-        "#D32F7D"
-    ]
-
 
     return(
         <Carousel>
@@ -32,29 +13,25 @@ function HomeCarouselTwo (props) {
                 let position = index%3
                 return (
                     isSmallScreen ?
-                    
-                        <Box height="60vh" sx={{backgroundColor: bgc[position], display: "flex", flexDirection: "column", justifyContent: "space-between"}}>
-                            <Typography variant="h5" color={titleColor[position]} align="center">
-                                {current.name}
-                            </Typography>
-                            <Box sx={{mx: "auto", display: "flex", justifyContent:"center"}}>
-                                <img
-                                    src = {current.img}
-                                    alt = {current.name}
-                                    width = "80%"
-                                    maxHeight="10vh"
-                                />
-                            </Box>
-                            <Typography color={textColor[position]} align="center">
-                                {current.description}
-                            </Typography>
-                            <Box sx={{display: "flex", justifyContent:"center"}}>
-                                <Link to = {`/category/${current._id}`} className="clean-link" style={{color: titleColor[position], textAlign: "center"}}  > 
-                                        Check it Out    
-                                </Link>
-                            </Box>
-
-                        </Box>
+                        <Link to={`/category/${current._id}`} className="clean-link">
+                            <Grid height="60vh" container className="bgc-0">
+                                <Grid item xs={12}>
+                                    <Typography variant="h4" color="white" className="bgc-3" align="center">
+                                        {current.name}
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={12} className="flex-center">
+                                    <img
+                                        src = {current.img}
+                                        alt = {current.name}
+                                        width = "100%"
+                                    />
+                                </Grid>
+                                <Typography color="#A56DFF" className="bgc-2 flex-row-center" align="center">
+                                    {current.description}
+                                </Typography>
+                            </Grid>
+                        </Link>
 
                     :
                     <Link to={`/category/${current._id}`} className="clean-link">

@@ -1,7 +1,7 @@
 import api from "../configs/api";
 import {useState, useEffect, useContext} from "react";
 import Navbar from "../components/Navigation/Navbar";
-import { Typography, Button, Paper, TextField, MenuItem, Select, Grid, InputLabel} from "@mui/material";
+import { Typography, Button, Paper, MenuItem, Select, Grid, InputLabel} from "@mui/material";
 import CenteredLoading from "../components/CenteredLoading";
 import { useParams } from "react-router";
 import {CartContext} from "../contexts/cartContext";
